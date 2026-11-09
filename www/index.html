@@ -46,7 +46,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 </style>
 </head>
 <body>
-<h1>🩺 سجل الورديات — النساء والتوليد</h1>
+<h1>سجل الورديات — النساء والتوليد</h1>
 <div class="tabs" id="tabs"></div>
 <div id="v"></div>
 <div id="msg"></div>
@@ -112,12 +112,12 @@ return `<div class="card"><h2>${en?"تعديل بيانات":"إضافة ممر�
 <div class="row"><label class="f0 m">نوع المناوبة</label><select id="nt"><option value="d" ${ty==="d"?"selected":""}>يومي</option><option value="h" ${ty==="h"?"selected":""}>جمعة وسبت</option></select>${ty==="d"?`<select id="nsh">${S.shifts.map(s=>`<option value="${s.id}" ${e.shift===s.id?"selected":""}>${esc(s.n)}</option>`).join("")}</select>`:""}</div>
 <div class="m">أيام المناوبة</div><div style="margin-bottom:8px">${dl.map(i=>`<label class="chk"><input type="checkbox" class="dy" value="${i}" ${dys.includes(i)?"checked":""}>${DN[i]}</label>`).join("")}</div>
 <div class="row"><button data-a="addn">${en?"حفظ التعديل":"إضافة"}</button>${en?'<button class="s" data-a="cnn">إلغاء</button>':""}</div></div>
-<div class="card"><h2>الطاقم (${S.nurses.length})</h2><input type="text" id="qs" placeholder="🔍 بحث بالاسم" value="${esc(qs)}" style="margin-bottom:8px">
+<div class="card"><h2>الطاقم (${S.nurses.length})</h2><input type="text" id="qs" placeholder="بحث بالاسم" value="${esc(qs)}" style="margin-bottom:8px">
 ${S.nurses.filter(n=>n.name.includes(qs.trim())).map(n=>`<div class="ln"><div class="row" style="margin:0"><b>${esc(n.name)}</b><span class="f0"><button class="d" data-a="edn" data-id="${n.id}" style="color:var(--ac)">تعديل</button><button class="d" data-a="deln" data-id="${n.id}">حذف</button></span></div>
-<div class="m">${n.type==="d"?"🕒 "+esc(shn(n.shift))+" • "+(n.days||[]).map(i=>DN[i]).join("، "):n.type==="h"?"🕒 جمعة وسبت • "+(n.days||[]).map(i=>DN[i]).join("، "):"⚠️ لم تُحدد المناوبة"}</div>
-<div class="m">${[n.home&&"🏠 "+esc(n.home),n.ms&&"💍 "+esc(n.ms),n.phone&&"📞 "+esc(n.phone)].filter(Boolean).join(" • ")}</div>
-<div class="m">${n.js||n.je?"📅 "+(n.js?"التحاق: "+fd2(n.js):"")+(n.je?" • نهاية: "+fd2(n.je):""):""}${n.je&&n.je<ds(new Date())?' <b style="color:var(--dg)">(منتهي)</b>':""}</div>
-<div class="row" style="margin:6px 0 0">${n.phone?`<a class="btn" href="tel:${String(n.phone).replace(/[^\d+]/g,"")}">📞 اتصال</a>`:""}${n.wa||n.phone?`<a class="btn" target="_blank" rel="noopener" href="https://wa.me/${wa(n.wa||n.phone)}">💬 واتساب</a>`:""}</div></div>`).join("")||'<div class="m">لا توجد أسماء</div>'}</div>`}
+<div class="m">${n.type==="d"?"المناوبة: "+esc(shn(n.shift))+" • "+(n.days||[]).map(i=>DN[i]).join("، "):n.type==="h"?"المناوبة: جمعة وسبت • "+(n.days||[]).map(i=>DN[i]).join("، "):"تنبيه: لم تُحدد المناوبة"}</div>
+<div class="m">${[n.home&&"السكن: "+esc(n.home),n.ms&&"الحالة: "+esc(n.ms),n.phone&&""+esc(n.phone)].filter(Boolean).join(" • ")}</div>
+<div class="m">${n.js||n.je?""+(n.js?"التحاق: "+fd2(n.js):"")+(n.je?" • نهاية: "+fd2(n.je):""):""}${n.je&&n.je<ds(new Date())?' <b style="color:var(--dg)">(منتهي)</b>':""}</div>
+<div class="row" style="margin:6px 0 0">${n.phone?`<a class="btn" href="tel:${String(n.phone).replace(/[^\d+]/g,"")}">اتصال</a>`:""}${n.wa||n.phone?`<a class="btn" target="_blank" rel="noopener" href="https://wa.me/${wa(n.wa||n.phone)}">واتساب</a>`:""}</div></div>`).join("")||'<div class="m">لا توجد أسماء</div>'}</div>`}
 
 function vD(){const R=[];
 for(let i=0;i<7;i++){const d=add(wk,i);S.shifts.forEach((s,j)=>R.push({d,sh:s.id,n:s.n,t:s.s+"→"+s.e,dl:j?"":`<td rowspan="${S.shifts.length}"><b>${DN[i]}</b><br><span class="m">${fs(d)}</span></td>`}))}
@@ -141,7 +141,7 @@ function repL(){const {f,t,s}=rq,inr=d=>d&&(!f||d>=f)&&(!t||d<=t);let L=S.nurses
 if(s==="j")L=L.filter(n=>inr(n.js));else if(s==="e")L=L.filter(n=>inr(n.je));else if(s==="a")L=L.filter(n=>(!t||!n.js||n.js<=t)&&(!f||!n.je||n.je>=f));
 return L.sort((a,b)=>(a.js||"9").localeCompare(b.js||"9"))}
 function vR(){const {f,t,s}=rq,L=repL(),c=x=>S.nurses.filter(n=>stt(n)===x).length,so=(v,l)=>`<option value="${v}" ${s===v?"selected":""}>${l}</option>`;
-return `<div class="card"><h2>تقرير الالتحاق بالقسم</h2><input type="text" id="qs" placeholder="🔍 بحث بالاسم" value="${esc(qs)}" style="margin-bottom:8px">
+return `<div class="card"><h2>تقرير الالتحاق بالقسم</h2><input type="text" id="qs" placeholder="بحث بالاسم" value="${esc(qs)}" style="margin-bottom:8px">
 <div class="row"><select id="rs">${so("","الكل")}${so("j","التحقوا خلال الفترة")}${so("e","انتهى التحاقهم خلال الفترة")}${so("a","على رأس العمل خلال الفترة")}</select></div>
 <div class="row"><label class="f0 m">من</label><input type="date" id="rf" value="${f}"><label class="f0 m">إلى</label><input type="date" id="rt" value="${t}"></div>
 <div class="m">الإجمالي ${S.nurses.length} • على رأس العمل ${c("على رأس العمل")} • منتهي ${c("منتهي")} • لم يبدأ ${c("لم يبدأ")}</div></div>
@@ -221,9 +221,12 @@ const te=new TextEncoder(),td=new TextDecoder();
 const b64=u=>{let s="";for(const x of new Uint8Array(u))s+=String.fromCharCode(x);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
 const unb=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")),c=>c.charCodeAt(0));
 let CK=null,SALT=null,DEVC="";
-async function devCode(){let id;const nat=window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform();
-if(nat){try{id=(await Capacitor.registerPlugin("Device").getId()).identifier}catch(e){}if(!id)return""}
-else{id=localStorage.getItem("did");if(!id){id=b64(crypto.getRandomValues(new Uint8Array(12)));localStorage.setItem("did",id)}}
+let DERR="";
+async function devCode(){let id="";const nat=!!window.NRSID||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+try{if(window.NRSID)id=String(NRSID.get()||"")}catch(e){DERR=String(e)}
+if(nat&&!id){try{id=(await Capacitor.registerPlugin("Device").getId()).identifier||""}catch(e){DERR+=" "+String((e&&e.message)||e)}}
+if(!nat){id=localStorage.getItem("did");if(!id){id=b64(crypto.getRandomValues(new Uint8Array(12)));localStorage.setItem("did",id)}}
+if(!id)return"";
 const h=new Uint8Array(await crypto.subtle.digest("SHA-256",te.encode("nrs|"+id)));
 return [...h.slice(0,8)].map(x=>x.toString(16).padStart(2,"0")).join("").toUpperCase()}
 async function licOK(){try{const l=localStorage.getItem("lic");if(!l||!PUB)return false;
@@ -235,15 +238,15 @@ async function vaultSave(){if(!CK)return;try{const iv=crypto.getRandomValues(new
 localStorage.setItem("vault",JSON.stringify({s:b64(SALT),i:b64(iv),c:b64(c)}))}catch(e){toast("تعذّر الحفظ")}}
 function save(){vaultSave()}
 function gate(m){$("tabs").innerHTML="";let h;
-if(m==="a")h=`<h2>🔒 تفعيل التطبيق</h2><div class="m">أرسل رمز الجهاز للمطوّر ليعطيك الرقم التسلسلي</div><div style="font-size:22px;font-weight:700;direction:ltr;text-align:center;margin:12px 0;letter-spacing:2px">${DEVC.replace(/(.{4})(?=.)/g,"$1-")}</div><button class="s" data-a="cpd" style="width:100%">نسخ الرمز</button><textarea id="sn" dir="ltr" placeholder="الرقم التسلسلي" style="margin-top:8px;min-height:70px;font-size:12px"></textarea><button data-a="act" style="width:100%;margin-top:8px">تفعيل</button>`;
-else h=`<h2>🔐 ${m==="c"?"إنشاء كلمة مرور":"فتح التطبيق"}</h2><div class="m">${m==="c"?"تُشفَّر بياناتك بها. إذا نسيتها لا يمكن استرجاعها (احتفظ بنسخة احتياطية).":"أدخل كلمة المرور"}</div><input type="password" id="pw" placeholder="كلمة المرور" style="margin-bottom:8px">${m==="c"?'<input type="password" id="pw2" placeholder="تأكيد كلمة المرور" style="margin-bottom:8px">':""}<button data-a="${m==="c"?"mkpw":"unl"}" style="width:100%">${m==="c"?"حفظ":"فتح"}</button>`;
+if(m==="a")h=`<h2>تفعيل التطبيق</h2><div class="m">أرسل رمز الجهاز للمطوّر ليعطيك الرقم التسلسلي</div><div style="font-size:22px;font-weight:700;direction:ltr;text-align:center;margin:12px 0;letter-spacing:2px">${DEVC.replace(/(.{4})(?=.)/g,"$1-")}</div><button class="s" data-a="cpd" style="width:100%">نسخ الرمز</button><textarea id="sn" dir="ltr" placeholder="الرقم التسلسلي" style="margin-top:8px;min-height:70px;font-size:12px"></textarea><button data-a="act" style="width:100%;margin-top:8px">تفعيل</button>`;
+else h=`<h2>${m==="c"?"إنشاء كلمة مرور":"فتح التطبيق"}</h2><div class="m">${m==="c"?"تُشفَّر بياناتك بها. إذا نسيتها لا يمكن استرجاعها (احتفظ بنسخة احتياطية).":"أدخل كلمة المرور"}</div><input type="password" id="pw" placeholder="كلمة المرور" style="margin-bottom:8px">${m==="c"?'<input type="password" id="pw2" placeholder="تأكيد كلمة المرور" style="margin-bottom:8px">':""}<button data-a="${m==="c"?"mkpw":"unl"}" style="width:100%">${m==="c"?"حفظ":"فتح"}</button>`;
 $("v").innerHTML=`<div class="card">${h}<button class="s" data-a="pick" style="width:100%;margin-top:8px">استرجاع من نسخة احتياطية</button><input type="file" id="rfile" hidden></div>`}
 async function shareBk(){const o=JSON.stringify({t:"nrs1",v:JSON.parse(localStorage.getItem("vault")||"null"),l:localStorage.getItem("lic")||""});
 try{const r=await Capacitor.registerPlugin("Filesystem").writeFile({path:"backup-"+ds(new Date())+".nrs",data:o,directory:"CACHE",encoding:"utf8"});
 await Capacitor.registerPlugin("Share").share({title:"نسخة احتياطية - سجل الورديات",files:[r.uri]})}
 catch(e){if(/cancel/i.test(String((e&&e.message)||e)))return;try{await navigator.clipboard.writeText(o);toast("تم نسخ النسخة الاحتياطية كنص")}catch(x){toast("تعذّر إنشاء النسخة")}}}
 function restoreFile(f){const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(o.t!=="nrs1"||!o.v)throw 0;localStorage.setItem("vault",JSON.stringify(o.v));if(o.l)localStorage.setItem("lic",o.l);CK=null;S=clone(D0);toast("تم الاسترجاع — أدخل كلمة المرور");boot()}catch(e){toast("ملف غير صالح")}};r.readAsText(f)}
-async function boot(){DEVC=await devCode();if(!DEVC){$("tabs").innerHTML="";$("v").innerHTML='<div class="card">تعذّر قراءة معرّف الجهاز.</div>';return}
+async function boot(){DEVC=await devCode();if(!DEVC){$("tabs").innerHTML="";$("v").innerHTML='<div class="card">تعذّر قراءة معرّف الجهاز.<div class="m" dir="ltr" style="margin-top:8px">'+esc(DERR||"no error")+'</div></div>';return}
 if(!(await licOK()))return gate("a");gate(localStorage.getItem("vault")?"u":"c")}
 let HT=0;document.addEventListener("visibilitychange",()=>{if(document.hidden)HT=Date.now();else if(CK&&HT&&Date.now()-HT>6e4){CK=null;S=clone(D0);ed=null;dr=null;gate("u")}});
 boot();
